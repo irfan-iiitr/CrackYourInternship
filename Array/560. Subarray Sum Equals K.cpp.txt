@@ -1,0 +1,24 @@
+560. Subarray Sum Equals K
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int,int> mp; // Create a hashmap to store cumulative sum frequencies
+        int currSum = 0 , ans = 0; // Initialize variables for current sum and answer
+        
+        mp[0] = 1; // Initialize the hashmap with cumulative sum 0 with frequency 1
+        // Loop through the array
+        for(int i = 0 ; i < nums.size() ; i++){
+            currSum += nums[i]; // Add the current element to the current sum
+            
+            // If there is a subarray with sum (currSum - k), add its frequency to the answer
+            if(mp.find(currSum - k) != mp.end() ){
+                ans += mp[currSum - k];
+            }
+            
+            mp[currSum]++; // Increment the frequency of the current cumulative sum
+        }
+        
+        return ans; // Return the total count of subarrays with sum k
+    }
+};

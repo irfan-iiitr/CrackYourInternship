@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxScore(vector<int>& cp, int k) {
+         int lsum=0,rsum=0;
+
+         int ans=0;
+         int n=cp.size();
+         lsum=accumulate(cp.begin(),cp.begin()+k,0); //sum of left k points
+         ans=lsum;
+         int j=n-1;
+         //add from last ...remove from first k one by one 
+         for(int i=k-1;i>=0;i--){
+            lsum-=cp[i];
+            rsum+=cp[j];
+            j--;
+            ans=max(ans,lsum+rsum);
+         }
+
+         return ans;
+    }
+};

@@ -1,0 +1,32 @@
+public:
+   set<vector<int>>st;
+    
+    void solve (int index, vector<int> &arr , int n){
+        // Base Case : if the current index reached n then insert it to the set
+        if(index == n) {
+            st.insert(arr);
+            return ;
+        }
+        
+        for(int i=index; i<n; i++){
+            // avoiding duplicate elements
+            if(i!= index && arr[index] == arr[i])
+                continue;
+            swap(arr[i], arr[index] );
+            // calling the recursive function
+            solve(index+1, arr , n);
+            // backtracking
+            swap(arr[i], arr[index] );
+        }
+    }
+    vector<vector<int>> uniquePerms(vector<int> &arr ,int n) {
+        // code here
+         // to avoid duplicate values
+       sort(arr.begin(), arr.end());
+       // calling the recursive function
+       solve(0, arr , n);
+       
+       // inserting all permutaions in set into the answer vector
+       vector<vector<int>>ans(st.begin(), st.end());
+       return ans;
+    }

@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> ans;
+        for (auto ele : nums) {
+            int index = abs(ele) - 1; // Get the index
+            if (nums[index] < 0) {
+                ans.push_back(abs(ele)); // If the element is negative, it means it's already been visited
+            } else {
+                nums[index] = -nums[index]; // Mark the element as visited by negating it
+            }                                                                      
+        }
+        return ans;
+    }
+};
+
+
+
+2nd approach ..bits
+
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+
+        bitset<100001> cache;
+
+        vector<int> result;
+        for (const int& n : nums) {
+            bool duplicate = cache.test(n);
+
+            if (duplicate) {
+                result.push_back(n);
+            }
+            else {
+                cache.set(n);
+            }
+        }
+
+        return result;
+    }
+};

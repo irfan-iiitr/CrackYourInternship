@@ -1,0 +1,106 @@
+The board is made up of an m x n grid of cells, where each cell has an initial state: live (represented by a 1) or dead 
+(represented by a 0).
+ Each cell interacts with its eight neighbors (horizontal, vertical, diagonal)
+ using the following four rules (taken from the above Wikipedia article):
+
+Any live cell with fewer than two live neighbors dies as if caused by under-population.
+Any live cell with two or three live neighbors lives on to the next generation.
+Any live cell with more than three live neighbors dies, as if by over-population.
+Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+The next state is created by applying the above rules simultaneously to every cell in the current state, 
+where births and deaths occur simultaneously. Given the current state of the m x n grid board, return the next state.
+
+
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        vector<vector<int>>ans(board);
+        vector<vector<int>>dir={{-1,-1},{-1,0},{-1,1},
+                                    {0,-1},{0,1},
+                                {1,1},{1,0},{1,-1}};
+        int n=board.size();
+        int m=board[0].size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int ableToLive=0;
+                for(int k=0;k<8;k++){
+                    if(((i+dir[k][0]>=0) && (i+dir[k][0]<n)) && 
+                        (j+dir[k][1]>=0) && (j+dir[k][1]<m)){
+                        
+                        int row=i+dir[k][0], col=j+dir[k][1];
+                        if(ans[row][col]==1) ableToLive++;
+                    }
+                }
+                if(ans[i][j]==1 && (ableToLive<2 || ableToLive>3)) board[i][j]=0;
+
+                else if(ans[i][j]==0 && ableToLive==3) board[i][j]=1;
+                else if(ans[i][j]==1 && (ableToLive==2 || ableToLive==3 )) board[i][j]=1;
+            }
+        }
+    }
+};
+
+
+
+Follow up:
+
+Could you solve it in-place? Remember that the board needs to be updated simultaneously:
+ You cannot update some cells first and then use their updated values to update other cells.
+
+class Solution {
+public:
+   bool isValid(int x, int y, int &n, int &m)
+    {
+        if(x >= 0 && y >= 0 && x < n && y < m) return true;
+        return false;
+    }
+    
+    void gameOfLife(vector<vector<int>>& board) {
+        int n = board.size();
+        int m = board[0].size();
+        // 2: 1->0 and 3: 0->1
+        
+        // left, right, up, down, up-Left, up-right, down-left, down-right
+        vector<int> X = {0, 0, -1, 1, -1, -1, 1, 1};
+        vector<int> Y = {-1, 1, 0, 0, -1, 1, -1, 1};
+        int x, y, liveNeighbors = 0;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                liveNeighbors = 0;
+                for(int k = 0; k < 8; k++)
+                {
+                    x = i + X[k];
+                    y = j + Y[k];
+                    if(isValid(x, y, n, m) && (board[x][y] == 1 || board[x][y] == 2))
+                    {
+                        liveNeighbors++;
+                    }
+                }
+                
+                if(board[i][j] == 1 && (liveNeighbors < 2 || liveNeighbors > 3) ) 
+                {
+                    board[i][j] = 2;
+                }
+                if(board[i][j] == 0 && liveNeighbors == 3)
+                {
+                    board[i][j] = 3;
+                }
+            }
+        }
+        
+        // second pass
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(board[i][j] == 2) board[i][j] = 0;
+                if(board[i][j] == 3) board[i][j] = 1;
+            }
+        }
+        return;
+    }
+};
+
+To solve the Game of Life problem while addressing the infinite board issue, you can use an in-place algorithm .

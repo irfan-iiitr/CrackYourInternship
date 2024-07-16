@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int c=0;
+        int taken;
+        for(auto ele:nums){
+            if(!c){
+                taken=ele;
+                c=1;
+            }
+            else if(taken==ele)
+            c++;
+            else
+            c--;
+        }
+        return taken;
+    }
+};

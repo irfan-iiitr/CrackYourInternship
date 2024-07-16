@@ -1,0 +1,20 @@
+ int slow = 0, fast = 0;
+         slow=nums[slow];
+         fast= nums[nums[fast]];
+         //flloyd warshal algorithm
+         //make a linked List and visualize
+
+        while(slow!=fast){
+            slow = nums[slow];  //move one step ahead
+            fast = nums[nums[fast]]; //move 2 step ahead
+        }
+
+        fast = 0;
+
+        while(slow != fast){ //find the intersection
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+   return slow;
+
+//TC -O(N)

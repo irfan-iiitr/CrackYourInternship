@@ -1,0 +1,48 @@
+class Solution {
+public:
+   vector<int> nextSmaller(vector<int> v) {
+        int n = v.size();
+        stack<int> st;
+        vector<int> ans(n, 0);
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.empty() && v[st.top()] >= v[i])
+                st.pop();
+
+            if (st.empty())
+                ans[i] = n;
+            else
+                ans[i] = st.top();
+            st.push(i);
+        }
+        return ans;
+    }
+ vector<int> prevSmaller(vector<int> v) {
+        stack<int> st;
+        int n = v.size();
+        vector<int> ans(n, 0);
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && v[st.top()] >= v[i])
+                st.pop();
+            if (st.empty())
+                ans[i] = -1;
+            else
+                ans[i] = st.top();
+            st.push(i);
+        }
+        return ans;
+    }
+
+int largestRectangleArea(vector<int>&v){
+    int n=v.size();
+    vector<int> prev=prevSmaller(v);
+    vector<int> next=nextSmaller(v);
+    int ans=INT_MIN;
+    for(int i=0;i<n;i++){
+        int width=next[i] - prev[i]-1;
+        int area=width*v[i];
+        ans=max(ans,area);
+    }
+    return ans;
+}
+};

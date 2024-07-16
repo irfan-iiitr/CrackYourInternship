@@ -1,0 +1,37 @@
+class Solution {
+public:
+bool dfs(int idx,int i,int j,vector<vector<char>>& mat, string word){
+    if(idx==word.size())
+    return true;
+    int n=mat.size(); int m=mat[0].size();
+    if(i<0 or j<0 or i>=n or j>=m or mat[i][j]!=word[idx])
+    return false;
+
+   char ch=mat[i][j];
+    mat[i][j]='#';
+        bool up=dfs(idx+1,i-1,j,mat,word);
+         bool down=dfs(idx+1,i+1,j,mat,word);
+          bool left=dfs(idx+1,i,j+1,mat,word);
+           bool right=dfs(idx+1,i,j-1,mat,word);
+
+
+       mat[i][j]=ch;
+
+    return up||down||left||right;     
+    
+}
+    bool exist(vector<vector<char>>& board, string word) {
+        int n=board.size(); int m=board[0].size();
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++){
+                if(board[i][j]==word[0]){
+                    bool ans=dfs(0,i,j,board,word);
+                    if(ans)
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};

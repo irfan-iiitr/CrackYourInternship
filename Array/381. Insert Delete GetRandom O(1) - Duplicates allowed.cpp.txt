@@ -1,0 +1,48 @@
+class RandomizedCollection {
+public:
+     vector<int>list;
+    unordered_map<int,unordered_set<int>>m;
+    RandomizedCollection() {
+        
+    }
+    
+    bool insert(int val) {
+        list.push_back(val);
+        m[val].insert(list.size()-1);
+        if(m[val].size()<=1) return true;
+        else return false;
+    }
+    
+    bool remove(int val) {
+        if(m[val].size()==0) return false;//ot found
+
+        int idx=*m[val].begin(); //first index
+
+        int lastVal=list.back(); //lastElement
+        swap(list[idx],list[list.size()-1]); //swap them
+
+        m[val].erase(idx);//erase  the first index
+
+        m[lastVal].insert(idx); //new idx for lastval
+
+        m[lastVal].erase(list.size()-1);//erasee for last val
+        list.pop_back();
+        return true;
+
+    }
+    
+    int getRandom() {
+        return list[rand()%list.size()];
+    }
+
+};
+
+
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
