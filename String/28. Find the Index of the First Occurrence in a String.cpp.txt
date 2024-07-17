@@ -1,0 +1,66 @@
+class Solution {
+public:
+ void findLps(string s,vector<int>&lps){
+    
+     int i=1,j=0;
+     int n=s.length();
+     lps[0]=0;
+     while(i<n){
+           if(s[i]==s[j]){
+            j++; 
+            lps[i]=j;
+            i++;
+           }
+           else {
+                if(j==0){
+                    lps[i]=0;
+                    i++;
+                }
+                else{
+                    j=lps[j-1];
+                }
+           }
+     }
+ }
+    int strStr(string haystack, string needle) {
+        int n=haystack.length();
+        int m=needle.length();
+        vector<int> lps(m,0);
+
+        findLps(needle,lps);
+
+        int i=0,j=0;
+
+        while(i<n){
+            if(haystack[i]==needle[j]){
+                i++;
+                j++;
+            }
+            if(j==m){
+                return i-j;
+            }
+            else if(i<n and needle[j]!=haystack[i]){
+                if(j==0){
+                    i++;
+                }
+                else{
+                    j=lps[j-1];
+                }
+            }
+        }
+
+        return -1;
+
+
+
+    }
+};
+
+
+
+
+
+
+-----------------METHOD 2 --------------
+
+return haystack.find(needle);

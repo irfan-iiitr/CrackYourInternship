@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isValid(string s) {
+    stack<char> stc;
+       for(auto i : s) {
+        // inserting symbols
+           if(i == '(' or i == '{' or i == '[') stc.push(i);
+           else {
+            //poping out symbols
+               if(stc.size() == 0) return false;
+               else if(stc.top() == '(' && i == ')') stc.pop();
+               else if(stc.top() == '{' && i == '}') stc.pop();
+               else if(stc.top() == '[' && i == ']') stc.pop();
+               else return false;
+           }
+       } 
+    //check for valid stack
+       if(stc.size() == 0) return true;
+       return false;
+    }
+};

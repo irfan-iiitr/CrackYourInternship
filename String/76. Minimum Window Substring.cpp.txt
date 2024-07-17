@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+       vector<int> m(256,0);
+       vector<int> m2(256,0);
+
+       for(auto x:t)
+       m[x]++;
+
+
+       int low=0;
+       int counter=0;
+       int min_length=INT_MAX;
+       int start=0;
+
+       for(int i=0;i<s.size();i++){
+           if(m2[s[i]]<m[s[i]])
+           counter++;
+
+           m2[s[i]]++;
+
+           if(counter==t.size()){ //if all charcters found  
+               while(low<i && m2[s[low]]>m[s[low]]){ 
+                  m2[s[low]]--;
+                   low++;
+               }
+               if(min_length>i-low+1){
+                   min_length=i-low+1;
+                   start=low;
+               }
+           }
+       }
+       return min_length==INT_MAX ? "": s.substr(start,min_length);
+    }
+};
