@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int search(vector<int>& arr, int k) {
+        int start = 0;
+        int size = arr.size();
+        int end = size-1;
+        while(start<=end){
+            int mid = (start+end)/2;
+            if(arr[mid]==k){
+                return mid;
+            }
+            if(arr[start]<=arr[mid]){ //normal first part ..no rotation done
+                if(arr[start]<=k && k<arr[mid]){
+                    end = mid-1;   //if found ....end=mid-1
+                }
+                else{
+                    start = mid+1;  //else start=mid+1
+                }
+            }
+            else{ //this means there's a rotation in the first part..start to mid. 
+                if(arr[mid]<k && k<=arr[end]){  //search in second part
+                    start = mid + 1; //present
+                }
+                else{
+                    end = mid-1;  //absent
+                }
+            }
+           
+        }
+        return -1;
+    }
+};

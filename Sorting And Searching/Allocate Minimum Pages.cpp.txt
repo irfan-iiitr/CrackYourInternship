@@ -1,0 +1,39 @@
+bool check(int arr[], int n, int m, long long mid) {
+    int c = 1;
+    long long sum = 0;
+    for(int i = 0; i < n; i++) {
+        if(sum + arr[i] > mid) {
+            c++;
+            sum = arr[i]; // Reset sum to arr[i], not mid
+            if(sum > mid) return false; // Immediate return if any single book exceeds mid
+        } else {
+            sum += arr[i];
+        }
+    }
+    
+    return c <= m;
+}
+    long long findPages(int n, int arr[], int m) {
+        // code here
+        if (n < m) return -1; // If there are fewer books than students
+        
+        long long  i=*min_element(arr,arr+n);
+        long long  j=accumulate(arr,arr+n,0ll);
+        
+        int ans=0;
+        
+        while(i<=j){
+            int mid=i+(j-i)/2;
+            int c=check(arr,n,m,mid);
+            if(c==1){
+                ans=mid;
+                j=mid-1;
+            }
+            else
+            i=mid+1;
+        }
+        
+        return ans;
+       
+        
+    }

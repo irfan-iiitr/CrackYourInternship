@@ -1,0 +1,48 @@
+public:
+void dfs(int x, int y , vector<vector<char>> &mat)
+    {
+        int n = mat.size();
+        int m = mat[0].size();
+        mat[x][y] = '-';
+        int dx[4] = {-1 , 1 , 0 , 0};
+        int dy[4] = {0 , 0 , 1 , -1};
+        for(int i = 0;i<4;i++)
+        {
+            int nx = x+dx[i];
+            int ny = y+dy[i];
+            if(nx>=0 and ny>=0 and nx<n and ny< m and mat[nx][ny] == 'O'){
+                dfs(nx ,ny , mat);
+            }
+        }
+        return;
+    }
+    vector<vector<char>> fill(int n, int m, vector<vector<char>> mat)
+    {
+        // code here
+        for(int i = 0;i<n;i++)
+        {
+            for(int j = 0;j<m;j++){
+                if(i == 0 or j == 0 or i == n-1 or j == m-1){
+                    if(mat[i][j] == 'O'){
+                        //run a dfs from her
+                        dfs(i , j , mat);
+                    }
+                }
+            }
+        }
+        for(int i = 0;i<n;i++)
+        {
+            for(int j = 0;j<m;j++){
+                if(mat[i][j] == '-'){
+                    //convert to O
+                    mat[i][j] = 'O';
+                }
+                else if(mat[i][j] == 'O'){
+                    mat[i][j] = 'X';
+                }
+            }
+        }
+        return mat;
+    
+    }
+};
