@@ -1,0 +1,45 @@
+class Solution{
+public:
+    Node* divide(int N, Node *head){
+        // code here
+         Node* cur=head;
+        Node*evenhead=NULL;
+        Node* eventail=NULL;
+        Node* oddhead=NULL;
+        Node* oddtail=NULL;
+        
+        while(cur){
+            if((cur->data)%2==0){
+                if(evenhead==NULL){
+                    evenhead=cur;
+                    eventail=cur;
+                }
+                else{
+                    eventail->next=cur;
+                    eventail=cur;
+                }
+            }
+            else{
+                if(oddhead==NULL){
+                    oddhead=cur;
+                    oddtail=cur;
+                }
+                else{
+                    oddtail->next=cur;
+                    oddtail=cur;
+                }
+            }
+            
+            cur=cur->next;
+        }
+        
+        if(evenhead==NULL || oddhead==NULL)
+        return head;
+        else{
+        eventail->next=oddhead;
+        oddtail->next=NULL;
+        
+        return evenhead;
+        }
+    }
+};

@@ -1,0 +1,36 @@
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        
+        ListNode* start=head;
+        if(!head) return NULL;
+        while(start){
+            int value=start->val;
+            ListNode* temp=start;
+            while(start->next and start->next->val==value)
+            start=start->next;
+            temp->next=start->next;
+            start=start->next;
+        }
+        return head;
+    }
+};
+
+
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        
+        ListNode* start=head;
+        if(!head) return NULL;
+        while(start!=NULL){
+            if(start->next and start->next->val==start->val){
+                start->next=start->next->next;//skip next character...start remains at same place
+            }
+            else
+            start=start->next;// move start to next pos
+        }
+        return head;
+    }
+};

@@ -1,0 +1,49 @@
+class Solution {
+public:
+ListNode* reverse(ListNode* head){
+    ListNode *prev=NULL, *curr=head, *fwd;
+    while(curr){
+      fwd=curr->next;
+      curr->next=prev;
+      prev=curr;
+      curr=fwd;
+    }
+    return prev;
+}
+
+void merge(ListNode *list1, ListNode *list2){
+    while(list2){
+        ListNode* temp=list1->next; //temp storage
+        list1->next=list2; 
+        list1=list2;
+        list2=temp;
+    }
+  }
+    void reorderList(ListNode* head) {
+        //Find Mid
+        //Reverse After Second Half(slow)
+        //alternate mix up ..simple
+
+         if(head == NULL || head -> next == NULL){
+            return ;
+        }
+
+
+        ListNode* slow=head; ListNode* fast=head , *prev=head;;
+        while(fast and fast->next){
+            prev=slow;
+            slow=slow->next; fast=fast->next->next;
+        }
+
+        cout<<prev->val<<endl;
+
+        prev->next=NULL;
+
+        ListNode* reveresedHead=reverse(slow);
+
+        //alternate mixup;
+        ListNode* first=head; ListNode* second=reveresedHead;
+
+         merge(first,second);
+    }
+};

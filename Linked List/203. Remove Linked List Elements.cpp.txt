@@ -1,0 +1,20 @@
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* curr=head;
+        while(curr){
+            if(curr==head and curr->val==val)//to hanlde the case when node is head itself
+            {
+                head=head->next;
+                curr=curr->next;
+            }
+            else if(curr->next and curr->next->val==val)//esace the next node
+            curr->next=curr->next->next;
+            else{
+                curr=curr->next; //else go forwad
+            }
+        }
+
+        return head;
+    }
+};

@@ -1,0 +1,79 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    unordered_map<Node* , Node*> mp;
+    void f(Node* newHead,Node* head){
+        while(head){
+            Node* newNode= new Node(head->val);
+            mp[head]=newNode;
+            newHead->next=newNode;
+            newHead=newHead->next;
+            head=head->next;
+        }
+
+    }
+    Node* copyRandomList(Node* head) {
+        if(!head) return NULL;
+        Node* newNode= new Node( head->val);
+        mp[head]=newNode;
+        f(newNode,head);
+        Node* curr=head; Node* newCurr=mp[curr];
+        while(curr){
+            Node* rand=curr->random;
+            mp[curr]->random=mp[rand];
+            curr=curr->next;
+        }
+
+        return mp[head];
+
+    }
+}; 
+O(N) - Space
+
+
+---------------------------O(1) Space --------------------------------------
+
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node* temp=head;
+	while(temp!=NULL){
+		Node*copynode=new Node(temp->val);  //insert the copy node ..just beside it..
+		copynode->next=temp->next;
+		temp->next=copynode;
+		temp=temp->next->next;
+	}
+    temp = head;
+	while(temp!=NULL){
+		if(temp->random) temp->next->random = temp->random->next; //the random of prev node put it next
+        else  temp->next->random = nullptr;
+        temp = temp->next->next; //move two times ahead
+	}
+	temp=head;
+	Node* dummynode=new Node(-1);
+    Node* res=dummynode;
+	while(temp!=NULL){
+		res->next=temp->next;
+		temp->next=temp->next->next; /take all the elemets leaving one by one
+		res=res->next;
+		temp=temp->next;
+	}
+	return dummynode->next;
+    }
+};
