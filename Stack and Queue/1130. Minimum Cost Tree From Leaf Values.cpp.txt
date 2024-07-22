@@ -1,0 +1,25 @@
+int mctFromLeafValues(vector<int>& arr) {
+        int ans=0;
+        //monotonic decreasing stack..to find min sum
+
+       while(arr.size()>1){
+        //find min elment
+         auto it=min_element(arr.begin(),arr.end());
+         auto idx=it-arr.begin();
+         if(idx>0 and idx<arr.size()-1){
+            ans+= arr[idx]*(min(arr[idx+1],arr[idx-1]));
+         }
+         else{
+            if(idx==0){
+                ans+=arr[idx]*arr[idx+1];
+            }
+            else if(idx==arr.size()-1){
+                ans+=arr[idx]*arr[idx-1];
+            }
+         }
+
+         arr.erase(it);
+       }
+
+       return ans;
+    }

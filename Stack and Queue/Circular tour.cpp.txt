@@ -1,0 +1,21 @@
+int tour(petrolPump p[],int n)
+    {
+       //Your code here
+          int start=0;
+          int currSum=0;
+          int deficit=0;
+          for(int i=0;i<n;i++){
+              currSum+=p[i].petrol - p[i].distance;s
+              if(currSum<0){
+                  start=i+1;
+                  deficit+=currSum;
+                  currSum=0;
+              }
+          }
+          
+          if(currSum+deficit>=0)
+          return start;
+          else
+          return -1;
+          
+    }s

@@ -1,0 +1,49 @@
+int orangesRotting(vector<vector<int>>& grid) {
+    int n = grid.size();
+    int m = grid[0].size();
+    int freshCount = 0;
+    int minTime = 0;
+    
+    queue<pair<pair<int, int>, int>> q;
+    
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(grid[i][j] == 2) {
+                q.push({{i, j}, 0});
+            } else if (grid[i][j] == 1) {
+                freshCount++;
+            }
+        }
+    }
+    
+    int row[] = {-1, 0, 1, 0};
+    int col[] = {0, 1, 0, -1};
+    
+    int rottenCount = 0;  // Initialize a variable to count rotten oranges
+    
+    while(!q.empty()) {
+        int r = q.front().first.first;
+        int c = q.front().first.second;
+        int t = q.front().second;
+        q.pop();
+        
+        minTime = max(minTime, t);
+        
+        for(int i = 0; i < 4; i++) {
+            int nrow = r + row[i];
+            int ncol = c + col[i];
+            
+            if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && grid[nrow][ncol] == 1) {
+                q.push({{nrow, ncol}, t + 1});
+                grid[nrow][ncol] = 2;  // Mark the orange as rotten
+                rottenCount++;         // Increment the rotten orange count
+            }
+        }
+    }
+    
+    if(rottenCount != freshCount) { // Check if all fresh oranges were contaminated
+        return -1;
+    }
+    
+    return minTime;
+}

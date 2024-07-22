@@ -1,0 +1,25 @@
+class Solution {
+public:
+//next greater element index
+    vector<int> dailyTemperatures(vector<int>& t) {
+        stack<int> st;
+        int n=t.size();
+        vector<int> ans(n,0);
+        for(int i=n-1;i>=0;i--){
+            int ele=t[i];
+            while(!st.empty() and ele>= t[st.top()]){
+                st.pop();
+            }
+
+            if(st.empty()==false){
+                ans[i]=st.top()-i;
+            }
+            else
+            {
+                ans[i]=0;
+            }
+            st.push(i);     
+        }
+        return ans;
+    }
+};

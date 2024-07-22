@@ -1,0 +1,33 @@
+class Solution {
+public:
+bool isnum(string s){
+    if( ((s[0] == '/' || s[0] == '+' || s[0] == '-' ||
+             s[0] == '*') && s.size() ==1 )) return false;
+      
+      return true;
+
+}
+    int evalRPN(vector<string>& tokens) {
+       stack<long long> st;
+        for(auto ele:tokens){
+            if(isnum(ele)){
+                st.push(stoi(ele));
+            }
+            else
+            {
+                long long  a=st.top(); st.pop();
+                long long  b=st.top(); st.pop();
+                if(ele=="*")
+                st.push(a*b);
+                else if(ele=="/")
+                st.push(b/a);
+                else if(ele=="-")
+                st.push(b-a);
+                else
+                st.push(a+b);
+            }
+        }
+
+        return st.top();
+    }
+};

@@ -1,0 +1,23 @@
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        // code here 
+        int potential = 0; //consider person 0 as potential
+        
+        for(int person=1;person<n;person++) //move from 1 to n
+        {
+            if(M[potential][person]==1) // if a person knws someonr..that is not out celebrity ..nove to the person know
+            {
+                potential = person;
+            }
+        }
+   
+        for(int i=0;i<n;i++) {
+            
+             if(i!=potential && (M[i][potential]==0 || M[potential][i]==1)) //if i does not know potential
+             // or potentail knows someone..then return -1
+             return -1;
+        }
+            
+        return potential;
+          
+    }
