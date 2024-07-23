@@ -1,0 +1,16 @@
+int i;
+Node* solve(int s, int pre[], char preLN[]){
+    if(preLN[i] == 'L'){
+        Node* n = new Node(pre[i++]);
+        return n;
+    }
+    Node* n = new Node(pre[i++]);
+    n->left = solve(s,pre,preLN);
+    n->right = solve(s,pre,preLN);
+    return n;
+}
+struct Node *constructTree(int s, int pre[], char preLN[])
+{
+    i = 0;
+    return solve(s,pre,preLN);
+}

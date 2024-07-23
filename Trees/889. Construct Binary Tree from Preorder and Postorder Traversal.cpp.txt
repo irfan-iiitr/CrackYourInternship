@@ -1,0 +1,36 @@
+class Solution {
+public:
+   int cur =0;
+    TreeNode* solve(vector<int>& preorder,int l,int r, unordered_map<int,int> &mp) {
+        if(l>r) return NULL;
+        int node_val = preorder[cur];
+        
+        cur++; //move to the next element
+
+        TreeNode* node = new TreeNode(node_val);
+        if(l==r) return node;
+
+        
+        if(cur>=preorder.size()) return NULL;
+
+        // look for the next element in the preorder array for partition
+        int partition = mp[preorder[cur]];
+
+    
+        node->left = solve(preorder,l,partition,mp);
+        node->right = solve(preorder,partition+1,r-1,mp); // exclude the last node as already included.
+
+        return node;
+    }
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        // for O(1) searching
+        unordered_map<int,int> mp;
+
+        for(int i=0;i<postorder.size();i++) {
+            mp[postorder[i]] = i;
+        }
+
+        return solve(preorder,0,preorder.size()-1,mp);
+        
+    }
+};

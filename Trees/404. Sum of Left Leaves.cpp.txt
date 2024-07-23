@@ -1,0 +1,28 @@
+class Solution {
+public:
+int ans=0;
+
+bool isLeaf(TreeNode* root){
+    if(root->left==NULL and root->right==NULL)
+    return true;
+    return false;
+}
+
+void f(TreeNode* root){
+    if(!root) return;
+
+    if(root->left){
+        if(isLeaf(root->left))
+        {
+            ans+=root->left->val;
+        }
+    }
+    f(root->left);
+    f(root->right);
+}
+
+int sumOfLeftLeaves(TreeNode* root) {
+     f(root);
+     return ans;
+    }
+};

@@ -1,0 +1,16 @@
+class Solution {
+public:
+
+int f(TreeNode* root,bool &ans){ //function for height
+    if(!root) return 0;
+    int left=f(root->left,ans);
+    int right=f(root->right,ans);
+    if(abs(left-right)>1) ans=false;
+    return 1+max(left,right);
+}
+    bool isBalanced(TreeNode* root) {
+        bool ans=true;
+        f(root,ans);
+        return ans;
+    }
+};

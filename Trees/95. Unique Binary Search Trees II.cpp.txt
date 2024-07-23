@@ -1,0 +1,31 @@
+class Solution {
+public:
+vector<TreeNode*> f(int start,int end){
+    if(start>end) return {NULL};
+
+    if(start==end){
+        TreeNode* temp=new TreeNode(start);
+        return {temp};
+    }
+    vector<TreeNode*> ans;
+    for(int i=start;i<=end;i++){
+        vector<TreeNode*> left_bsts=f(start,i-1);
+        vector<TreeNode*> right_bsts=f(i+1,end);
+
+
+        for(auto leftRoot:left_bsts){
+            for(auto rightRoot:right_bsts){
+                TreeNode* temp=new TreeNode(i);
+                temp->left=leftRoot;
+                temp->right=rightRoot;
+                ans.push_back(temp);
+            }
+        }
+    }
+     return ans;
+}
+    vector<TreeNode*> generateTrees(int n) {
+        if (n == 0) return {};
+        return f(1, n);
+    }
+};

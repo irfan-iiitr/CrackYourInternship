@@ -1,0 +1,17 @@
+class Solution {
+public:
+   bool f(TreeNode* root1,TreeNode* root2){
+    if(root1==NULL and root2==NULL) return true;
+    if(root1==NULL or root2==NULL) return false;
+
+    int left=f(root1->left,root2->right);
+    int right=f(root1->right,root2->left);
+    bool check=false;
+    if(root1->val==root2->val) check=true;
+
+    return left and right and check;
+}
+    bool isSymmetric(TreeNode* root) {
+        return f(root,root);
+    }
+};

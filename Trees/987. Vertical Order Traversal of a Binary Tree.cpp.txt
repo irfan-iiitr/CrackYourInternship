@@ -1,0 +1,32 @@
+class Solution {
+public:
+vector<vector<int>> ans;
+void f(TreeNode* root,int row,int col, map<int,map<int,multiset<int>>> &mp){
+    if(!root) return;
+
+    mp[col][row].insert(root->val);
+    f(root->left,row+1,col-1,mp);
+    f(root->right,row+1,col+1,mp);
+}
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+         map<int,map<int,multiset<int>>> mp;
+
+        f(root,0,0,mp);
+
+        vector<vector<int>> ans;
+        for(auto col: mp){ //for each col
+             vector<int> v; //vector for each row
+            for(auto row:col.second){
+                for(auto ele: row.second){
+                    v.push_back(ele);   
+                }
+            }
+            ans.push_back(v);
+        }
+
+
+        return ans;
+
+
+    }
+};

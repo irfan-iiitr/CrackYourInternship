@@ -1,0 +1,51 @@
+ unordered_map<int,int> mp;
+  void f(Node* root){
+      if(!root) return;
+      
+      mp[root->data]++;
+      f(root->left);
+      f(root->right);
+  }
+  void check(Node* root, bool &ans){
+      if(!root) return ;
+      
+      if(root->left==NULL and root->right==NULL and (mp[root->data+1]>0 and mp[root->data-1]>0) ){
+          ans=true;
+      }
+      
+      check(root->left,ans);
+      check(root->right,ans);
+  }
+    bool isDeadEnd(Node *root)
+    {
+        //Your code here
+        
+        f(root);
+        mp[0]++;
+        bool ans=false;
+        check(root,ans);
+        return ans;
+    }
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+bool isDeadEndUtil(Node* root, int min, int max) {
+    if (!root) return false;
+
+    // If this is a leaf node
+    if (!root->left && !root->right) {
+        // Check if it is a dead end
+        if (min == root->data - 1 && max == root->data + 1) {
+            return true;
+        }
+    }
+
+    // Recur for the left and right subtrees with updated ranges
+    return isDeadEndUtil(root->left, min, root->data) || isDeadEndUtil(root->right, root->data, max);
+}
+
+bool isDeadEnd(Node* root) {
+    // Initial call with range [1, INT_MAX]
+    return isDeadEndUtil(root, 1, INT_MAX);
+}

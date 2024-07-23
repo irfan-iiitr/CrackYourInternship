@@ -1,0 +1,16 @@
+class Solution {
+public:
+   int max_sum=INT_MIN;
+    int dfs(TreeNode* root){
+        if(!root) return 0;
+        int left=max(dfs(root->left),0);
+        int right=max(dfs(root->right),0);
+        int sum=root->val+left+right;
+        max_sum=max(max_sum,sum);
+        return root->val+max(left,right);
+    }
+    int maxPathSum(TreeNode* root) {
+        dfs(root);
+        return max_sum;
+    }
+};

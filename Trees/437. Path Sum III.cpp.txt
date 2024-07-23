@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int ans = 0;
+unordered_map<long long int, int> mp;
+void solve(TreeNode* curr, int targetSum, long long int currSum)
+{
+    if(curr == NULL)
+        return;
+    currSum += curr->val;
+    if(mp.find(currSum - targetSum) != mp.end())
+        ans += mp[currSum - targetSum];
+    mp[currSum]++;
+    solve(curr->left, targetSum, currSum);
+    solve(curr->right, targetSum, currSum);
+    mp[currSum]--;
+}
+
+  int pathSum(TreeNode* root, int targetSum) {
+    mp[0] = 1;
+    solve(root, targetSum, 0);
+    return ans;
+  }
+};

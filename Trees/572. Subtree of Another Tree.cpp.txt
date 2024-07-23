@@ -1,0 +1,20 @@
+class Solution {
+public:
+bool find(TreeNode* root, TreeNode* subRoot){
+    if(root==NULL and subRoot==NULL) return true;
+    if(root==NULL or subRoot==NULL) return false;
+
+    return root->val==subRoot->val and find(root->left,subRoot->left) and find(root->right,subRoot->right);
+}
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if(!root) return false;
+
+         bool left=isSubtree(root->left,subRoot);
+         bool right=isSubtree(root->right,subRoot);
+        bool check=false;
+         if(root->val==subRoot->val)
+         check=find(root,subRoot);
+
+         return left|right|check;
+    }
+};

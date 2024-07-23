@@ -1,0 +1,89 @@
+class BSTIterator {
+public:
+    BSTIterator(TreeNode* root) {
+        // Initialize the stack and push the leftmost nodes of the root
+        pushLeft(root);
+    }
+    
+    int next() {
+        // Pop the top node from the stack
+        TreeNode* node = st.top();
+        st.pop();
+        
+        // Push the leftmost nodes of the right child of the popped node
+        pushLeft(node->right);
+        
+        // Return the value of the popped node
+        return node->val;
+    }
+    
+    bool hasNext() {
+        // Return true if there are still nodes in the stack
+        return !st.empty();
+    }
+
+private:
+    std::stack<TreeNode*> st;
+    
+    // Helper function to push all the left nodes starting from the given node
+    void pushLeft(TreeNode* node) {
+        while (node != NULL) {
+            st.push(node);
+            node = node->left;
+        }
+    }
+};
+
+-------------------------COMMENTS --------------------------------------------
+
+class BSTIterator {
+public:
+    BSTIterator(TreeNode* root) {
+        // Initialize the stack and push the leftmost nodes of the root
+        pushLeft(root);
+    }
+    
+    int next() {
+        // Pop the top node from the stack
+        TreeNode* node = st.top();
+        st.pop();
+        
+        // Push the leftmost nodes of the right child of the popped node
+        pushLeft(node->right);
+        
+        // Return the value of the popped node
+        return node->val;
+    }
+    
+    bool hasNext() {
+        // Return true if there are still nodes in the stack
+        return !st.empty();
+    }
+
+private:
+    std::stack<TreeNode*> st;
+    
+    // Helper function to push all the left nodes starting from the given node
+    void pushLeft(TreeNode* node) {
+        while (node != NULL) {
+            st.push(node);
+            node = node->left;
+        }
+    }
+}; 
+-------------------------------------------------------------------------------------------------
+
+next() Method:
+
+Pop the top node from the stack (the current smallest element).
+If the popped node has a right child, push all its left descendants onto the stack to ensure the next smallest elements
+ are available for future calls.
+
+
+hasNext() Method:
+
+Simply check if there are any nodes left in the stack. If the stack is not empty, it means there are more elements to visit in the in-order traversal.
+Space and Time Complexity:
+
+The space complexity is O(h), where h is the height of the tree, as the stack stores nodes along the path from the root to the current node.
+Both next() and hasNext() operations run in average O(1) time, making the iterator efficient.
