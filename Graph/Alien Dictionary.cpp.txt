@@ -1,0 +1,49 @@
+    string findOrder(string dict[], int N, int K) {
+        //code here
+            vector<int> adj[K];
+    vector<int> in(K, 0);
+    queue<int> q;
+
+    // Construct the graph
+    for (int i = 0; i < N - 1; i++) {
+        string s1 = dict[i];
+        string s2 = dict[i + 1];
+        int minLen = min(s1.length(), s2.length());
+        
+        for (int j = 0; j < minLen; j++) {
+            if (s1[j] != s2[j]) {
+                adj[s1[j] - 'a'].push_back(s2[j] - 'a');
+                in[s2[j] - 'a']++;
+                break; // Important: Only the first different character should be considered
+            }
+        }
+    }
+
+    // Topological sort using Kahn's algorithm
+    string ans;
+    for (int i = 0; i < K; i++) {
+        if (in[i] == 0) {
+            q.push(i);
+        }
+    }
+    
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        ans.push_back(node + 'a');
+        
+        for (auto nbr : adj[node]) {
+            in[nbr]--;
+            if (in[nbr] == 0) {
+                q.push(nbr);
+            }
+        }
+    }
+    
+    // If the answer length is not equal to K, it means there was a cycle, or not all nodes were reachable
+    if (ans.length() != K) {
+        return ""; // or handle the error case as required
+    }
+
+    return ans;
+    }

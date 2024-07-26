@@ -1,0 +1,29 @@
+  vector<string> ans;
+    void  f(int x,int y, vector<vector<int>> &mat, string path,vector<vector<int>> &vis){
+        int n=mat.size(); int m=mat[0].size();
+        if(x<0 or y<0 or x>=n or y>=m or mat[x][y]==0 or vis[x][y]==1 ) return ;
+        
+        if(x==n-1 and y==m-1){
+            ans.push_back(path);
+            return;
+        }
+        
+        vis[x][y]=1;
+        
+        f(x,y+1,mat,path+"R",vis);
+        f(x+1,y,mat,path+"D",vis);
+        f(x,y-1,mat,path+"L",vis);
+        f(x-1,y,mat,path+"U",vis);
+        
+         vis[x][y]=0;  //important i left
+        
+    }
+    vector<string> findPath(vector<vector<int>> &mat) {
+        // Your code goes here
+        string path="";
+        int n=mat.size(); int m=mat[0].size();
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        f(0,0,mat,path,vis);
+        
+        return ans;
+    }

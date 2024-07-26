@@ -1,0 +1,29 @@
+bool f(int i, int col, vector<int> adj[], vector<int>& color) {
+    color[i] = col; // Color the current node
+    
+    for (auto ele : adj[i]) {
+        if (color[ele] == -1) { // If the adjacent node is not colored
+            if (!f(ele, 1 - col, adj, color)) {
+                return false; // If it can't be colored properly, return false
+            }
+        } else if (color[ele] == col) {
+            return false; // If the adjacent node has the same color, return false
+        }
+    }
+    
+    return true;
+}
+	bool isBipartite(int V, vector<int>adj[]){
+	    // Code here
+	     vector<int> color(V, -1); // Initialize the color array with -1
+    
+    for (int i = 0; i < V; i++) {
+        if (color[i] == -1) { // If the node is not colored
+            if (!f(i, 0, adj, color)) {
+                return false; // If it can't be colored properly, return false
+            }
+        }
+    }
+    
+    return true;
+	}

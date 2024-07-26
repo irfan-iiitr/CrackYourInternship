@@ -1,0 +1,78 @@
+    bool isCyclicDFS(int i,int par,vector<int>&vis, vector<int> adj[])
+    {
+        vis[i]=1;
+        
+        for(auto nbr:adj[i]){
+            if(vis[nbr]==1 and nbr!=par)
+            return true;
+            else
+            {
+                if(vis[nbr]==0 and isCyclicDFS(nbr,i,vis,adj))
+                return true;
+            }
+        }
+        
+        return false; //remember to return fdalse;
+        
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        vector<int>vis(V,0);
+        bool ans=false;
+        for(int i=0;i<V;i++)
+        {
+            if(vis[i]==0)
+            ans=isCyclicDFS(i,-1,vis,adj);
+            if(ans==true) return true;
+        }
+        
+        return false;
+    }
+};
+
+
+----------------------------------------------------BFS----------------------------
+
+
+    bool isCyclicDFS(int v,vector<int>&vis, vector<int> adj[])
+    {
+        unordered_map<int,int> parent;
+        parent[v]=-1;
+        queue<int> q;
+        q.push(v);
+        
+        while(!q.empty())
+        {
+            int u=q.front();
+            q.pop();
+            vis[u]=1;
+            
+            for(auto &neighbour:adj[u])
+            {
+                if(vis[neighbour]==1 and parent[u]!=neighbour)
+                return true;
+                else if(vis[neighbour]==0)
+                {
+                    vis[neighbour]=1;
+                    parent[neighbour]=u;
+                    q.push(neighbour);
+                }
+            }
+        }
+        
+        return false;
+        
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        vector<int>vis(V,0);
+        bool ans=false;
+        for(int i=0;i<V;i++)
+        {
+            if(vis[i]==0)
+            ans=isCyclicDFS(i,vis,adj);
+            if(ans==true) return true;
+        }
+        
+        return false;
+    }

@@ -1,0 +1,39 @@
+class Solution {
+public:
+  pair<int,int> f(int n,int size){
+    int row=(n-1)/size; int col=(n-1)%size;
+    if(row%2==1) //if row is odd reverse starts in this board
+    col=size-1-col;
+    row=size-1-row;
+    return {row,col};
+  }
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int size=board.size();
+        unordered_set<int> vis;
+        queue<pair<int,int>> q;
+        q.push({1,0}); //start , dist
+
+        while(!q.empty()){
+            auto node=q.front(); int pos=node.first; int dist=node.second; q.pop();
+            
+            for(int i=1;i<=6;i++){
+                int newPos=i+pos;
+                auto [row,col]= f(newPos,size);
+
+                if(board[row][col]!=-1)
+                newPos=board[row][col];
+
+                if(newPos==size*size) return dist+1;
+
+                if(!vis.count(newPos)){
+                    vis.insert(newPos);
+                    q.push({newPos,dist+1});
+                }
+
+            }
+
+        }
+
+        return -1;
+    }
+};

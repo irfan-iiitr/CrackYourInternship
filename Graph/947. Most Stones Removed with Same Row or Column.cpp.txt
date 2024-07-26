@@ -1,0 +1,65 @@
+class DisjointSet{
+    
+    public:
+    vector<int> rank,parent;
+    DisjointSet(int n){
+        parent.resize(n,0);
+        rank.resize(n,0);
+        for(int i=0;i<n;i++){
+           parent[i]=i;         
+        }
+    }
+    
+    int findPar(int u){
+        if(parent[u]==u) return u;
+        else
+       return parent[u]=findPar(parent[u]);
+    }
+     void unionByRank(int u, int v) {
+        int pu = findPar(u), pv = findPar(v);
+        if (rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        } else if (rank[pv] < rank[pu]) {
+            parent[pv] = pu;
+        } else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+    }
+};
+
+
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+          int n = stones.size();
+    DisjointSet ds(n);
+
+    // O(n*n)
+    // Form components by using the following rule:- 
+    // if any stone shares a row or column with another stone, they are part of same component
+    for (int i = 0; i < n; i++)
+    {
+        int xi = stones[i][0];
+        int yi = stones[i][1];
+        for (int j = i+1; j < n; j++)
+        {
+            int xj = stones[j][0];
+            int yj = stones[j][1];
+            // if any common row or column found between 2 stones, unionize them (same component)
+            if ((xi == xj || yi == yj) && i != j)
+                ds.unionByRank(i, j);
+        } 
+    }
+
+    // find total components
+    // no of components = total no of ultimate parents
+    int cnt = 0;
+    for (int i = 0; i < n; i++)
+        if (i == ds.parent[i])
+            cnt++;
+
+    // Max removable stones = n(total stones) - no of components
+    return n - cnt;
+    }
+};

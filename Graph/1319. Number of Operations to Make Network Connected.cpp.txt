@@ -1,0 +1,65 @@
+class DisjointSet{
+    
+    public:
+    vector<int> rank,parent;
+    DisjointSet(int n){
+        parent.resize(n,0);
+        rank.resize(n,0);
+        for(int i=0;i<n;i++){
+           parent[i]=i; 
+        }
+    }
+    
+    int findPar(int u){
+        if(parent[u]==u) return u;
+        else
+       return parent[u]=findPar(parent[u]);
+    }
+     void unionByRank(int u, int v) {
+        int pu = findPar(u), pv = findPar(v);
+        if (rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        } else if (rank[pv] < rank[pu]) {
+            parent[pv] = pu;
+        } else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+    }
+};
+
+
+class Solution {
+public:
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        DisjointSet ds(n);
+        int cntExtra=0;
+
+        for(auto ele:connections){
+            int u=ele[0],v=ele[1];
+           if(ds.findPar(u)!=ds.findPar(v)){
+               ds.unionByRank(u,v);
+           }
+           else
+           cntExtra++; //if already connected..we have extra wires
+        }
+            int ans=0;// This variable counts the number of connected components 
+        for(int i=0;i<n;i++){
+            if(ds.parent[i]==i)
+            ans++;
+        }
+
+       ans--;//add 1 as the source..starting point will have the parent its own.
+        if(cntExtra>=ans)
+        return ans;
+
+
+        ///If cntExtra (the number of extra cables) is greater than or equal to ans
+        // (the number of connections needed), it means we have enough extra cables to connect all 
+        //the components together. 
+        //Therefore, the answer is ans (the number of additional connections needed).
+        return -1;
+
+        
+    }
+};

@@ -1,0 +1,38 @@
+    bool isCyclic(int V, vector<int> adj[]) {
+        // code here
+        //using Kahns algo indegree_one
+        //bfs
+        
+        queue<int> q;
+        vector<int> indegree(V,0);
+        for(int i=0;i<V;i++)
+        {
+            for(auto j:adj[i])
+            indegree[j]++;
+        }
+        
+        for(int i=0;i<V;i++){
+          if(indegree[i]==0)
+          q.push(i);           //for all starting pints
+        }
+             
+        int c=0;
+        while(!q.empty())
+        {
+            int u=q.front();
+            q.pop();
+            c++;
+            
+            for(auto &neigh:adj[u])
+            {
+                indegree[neigh]--;
+                if(indegree[neigh]==0) //if theres is a self loop indegree will not be zero
+                q.push(neigh);
+            }
+        }
+        // cout<<V<<endl;
+        // cout<<c<<endl;
+        
+        return c!=V;
+        
+    }

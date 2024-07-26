@@ -1,0 +1,45 @@
+void topoDFS(int src,stack<int>&s,vector<int> &vis,vector<int> adj[])
+    {
+        vis[src]=true;
+       
+        
+        for(auto &neigh:adj[src])
+        {
+            if(vis[neigh]==0)
+            {
+                topoDFS(neigh,s,vis,adj);
+            }
+        }
+         s.push(src);
+    }
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    vector<int> indegree(V,0);
+	    for(int i=0;i<V;i++){
+	        for(auto ele:adj[i]){
+	            indegree[ele]++;
+	        }
+	    }
+	    
+	    queue<int> q;
+	    vector<int> ans;
+	    for(int i=0;i<V;i++){
+	        if(indegree[i]==0) {
+	            q.push(i);
+	            ans.push_back(i);
+	        }
+	    }
+	    
+	    while(!q.empty()){
+	        auto node=q.front(); q.pop();
+	        for(auto nbr:adj[node]){
+	            indegree[nbr]--;
+	            if(indegree[nbr]==0) {
+	                q.push(nbr);
+	                ans.push_back(nbr);
+	            }
+	        }
+	    }
+	    return ans;
+	}

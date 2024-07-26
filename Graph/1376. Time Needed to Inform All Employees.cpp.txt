@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        // Create an adjacency list for the tree structure
+        vector<vector<int>> adj(n);
+        for(int i = 0; i < n; i++) {
+            int u = manager[i];
+            if(u != -1) {
+                adj[u].push_back(i);
+            }
+        }
+
+        // Queue for BFS, starting from the headID
+        queue<pair<int, int>> q; // pair<current_node, time_taken_so_far>
+        q.push({headID, 0});
+        
+        int maxTime = 0;
+
+        // Perform BFS
+        while(!q.empty()) {
+            auto [node, time] = q.front(); q.pop();
+            maxTime = max(maxTime, time);
+
+            // For all direct subordinates of the current node
+            for(int nbr : adj[node]) {
+                q.push({nbr, time + informTime[node]});
+            }
+        }
+
+        return maxTime;
+    }
+};

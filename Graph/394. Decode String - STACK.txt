@@ -1,0 +1,53 @@
+Example 1:
+
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+Example 2:
+
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+Example 3:
+
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+
+
+
+
+
+class Solution {
+public:
+    string decodeString(string s) {
+        stack<int> cnt;
+        stack<string> str;
+        string ans="";
+
+        int num=0;
+
+        for(auto c:s){
+            if(isdigit(c)){
+              num=num*10 + c-'0'; //form the number
+            }
+            else if(c=='['){
+                cnt.push(num); num=0;
+                str.push(ans); ans="";
+            }
+            else if(c== ']' ){ // at ending
+               int times=cnt.top(); cnt.pop();
+               string temp=ans; // store the string to be repeated in temp
+               ans=str.top(); str.pop(); //last string
+                while(times--){
+                    ans+=temp;
+                }
+            }
+            else{ //just form the string... [...this occurs it is pushed in ..] this occcurs it is appended n times
+               ans+=c;
+            }
+
+        }
+
+        return ans;
+
+
+    }
+};
