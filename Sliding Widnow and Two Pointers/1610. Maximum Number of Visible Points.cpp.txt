@@ -1,0 +1,70 @@
+class Solution {
+public:
+    int visiblePoints(vector<vector<int>>& points, int angle, vector<int>& location) {
+                vector<double> angles;
+        int sameLocationCount = 0;
+        double posx = location[0], posy = location[1];
+        
+        for (auto& point : points) {
+            double x = point[0], y = point[1];
+            if (x == posx && y == posy) {
+                sameLocationCount++;
+                continue;
+            }
+            double dx = x - posx;
+            double dy = y - posy;
+            double angleRadians = atan2(dy, dx);
+            double angleDegrees = angleRadians * (180.0 / M_PI);
+            if (angleDegrees < 0) {
+                angleDegrees += 360;
+            }
+            angles.push_back(angleDegrees);
+        }
+
+        // Sort the angles
+        sort(angles.begin(), angles.end());
+
+        // Duplicate angles with an added 360 degrees to handle circular nature
+        int n = angles.size();
+        for (int i = 0; i < n; i++) {
+            angles.push_back(angles[i] + 360);
+        }
+
+        int maxVisiblePoints = 0;
+        int j = 0;
+        
+        // Sliding window to find the maximum number of points in the given angle range
+        for (int i = 0; i < angles.size(); i++) {
+            while (angles[i] - angles[j] > angle) {
+                j++;
+            }
+            maxVisiblePoints = max(maxVisiblePoints, i - j + 1);
+        }
+
+        return maxVisiblePoints + sameLocationCount;
+    
+
+    }
+};
+
+
+// The atan and atan2 functions both deal with arctangent calculations but differ significantly in how they handle inputs and compute results.
+
+// atan(y/x)
+// Function: atan(y/x)
+// Input: A single value, y/x (the slope of the line).
+// Range of Output: The result is in the range (-π/2, π/2) radians, i.e., from -90 to 90 degrees.
+// Quadrant Information: This function can only determine the angle of the slope but cannot distinguish between points in different quadrants. It assumes the input slope is from a line in the first or fourth quadrants.
+// Division by Zero: If x is zero, y/x results in a division by zero error.
+// atan2(y, x)
+// Function: atan2(y, x)
+// Input: Two values, y and x (the coordinates of the point).
+// Range of Output: The result is in the range (-π, π] radians, i.e., from -180 to 180 degrees.
+// Quadrant Information: This function considers the signs of both x and y to determine the correct quadrant of the point, making it more accurate for all four quadrants.
+// Handles Zero: atan2 correctly handles cases where x is zero, preventing division by zero errors. It will return the appropriate angle for vertical lines (either π/2 or -π/2 radians).
+
+
+ //push again with +360 t form circle
+        //earlier 14 345 angle 35
+        // now 14 345 374 705 ..now 345 and 374 can pai..which is orignallly 14 and 345
+        //this follows cyclic pattern
