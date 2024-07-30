@@ -1,0 +1,20 @@
+class Solution {
+public:
+   int reversePairs(vector<int>& nums) {
+    if (nums.empty()) return 0; // Check for empty input
+
+        std::multiset<long long > st;
+       long long int ans = 0;
+        int n = nums.size();
+        
+        for (int i = 0; i < n; i++) {
+            auto it = st.upper_bound(2LL * nums[i]);
+            int d=distance(st.begin(), it);
+            cout<<d<<" "<<st.size()-d<<endl;
+            ans+=st.size()-d;
+            st.insert(nums[i]);
+        }
+        return ans;
+    }
+
+};
