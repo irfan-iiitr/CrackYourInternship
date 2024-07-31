@@ -1,0 +1,59 @@
+#include <vector>
+#include <stack>
+using namespace std;
+
+vector<int> prevS(int arr[], int n) {
+    stack<int> st;
+    vector<int> ans(n, -1);  // Initialize with -1 for previous smaller elements
+
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+            st.pop();
+
+        if (!st.empty())
+            ans[i] = st.top();
+
+        st.push(i);
+    }
+
+    return ans;
+}
+
+vector<int> nextS(int arr[], int n) {
+    stack<int> st;
+    vector<int> ans(n, n);  // Initialize with n for next smaller elements
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+            st.pop();
+
+        if (!st.empty())
+            ans[i] = st.top();
+
+        st.push(i);
+    }
+
+    return ans;
+}
+
+// Function to find maximum of minimums of every window size.
+vector<int> maxOfMin(int arr[], int n) {
+    vector<int> left = prevS(arr, n);
+    vector<int> right = nextS(arr, n);
+
+    vector<int> ans(n + 1, 0);  // Initialize answer array with 0
+
+    for (int i = 0; i < n; i++) {
+        int len = right[i] - left[i] - 1;  // Find the length of the window
+        ans[len] = max(ans[len], arr[i]);  // Update the answer array for the found length
+    }
+
+    // Fill the answer array for all window sizes
+    for (int i = n - 1; i >= 1; i--) {
+        ans[i] = max(ans[i], ans[i + 1]);
+    }
+
+    ans.erase(ans.begin());  // Remove the first element as there is no window of size 0
+
+    return ans;
+}
