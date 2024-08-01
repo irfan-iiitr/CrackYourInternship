@@ -1,0 +1,72 @@
+class Node {
+public:
+    Node* children[26];
+    bool isWord;
+
+    Node() {
+        isWord = false;
+        for (int i = 0; i < 26; ++i) {
+            children[i] = nullptr;
+        }
+    }
+    
+};
+
+class Trie{
+    public:
+    Node*  root;
+    Trie(){
+        root=new Node();
+    }
+    
+    void insert(string s){
+        Node* temp=root;
+        for(int i=0;i<s.length();i++){
+            int idx=s[i]-'a';
+            if(temp->children[idx]==NULL)
+            temp->children[idx]=new Node();
+            
+            temp=temp->children[idx];
+            
+        }
+        temp->isWord=true;
+    }
+    bool search(string s){
+        Node* temp=root;
+        for(int i=0;i<s.length();i++){
+            int idx=s[i]-'a';
+         if(temp->children[idx]==NULL) return false;
+         
+          temp=temp->children[idx];
+        }
+        return temp->isWord;
+    }
+    
+};
+
+class Solution{
+    public:
+    // A : given string to search
+    // B : vector of available strings
+     bool help(string &A,int i,Trie &t){
+         if(i==A.length()) return true;
+         for(int len=1;i+len<=A.size();len++){
+             string prefix=A.substr(i,len);
+             if(t.search(prefix))
+             {
+                 if(help(A,i+len,t))
+                 return true;
+             }
+         }
+     }
+    
+    int wordBreak(string A, vector<string> &B) {
+        //code here
+        Trie t;
+        for(int i=0;i<B.size();++i){
+            t.insert(B[i]);
+        }
+        
+       return help(A,0,t);
+    }
+};

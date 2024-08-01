@@ -1,0 +1,153 @@
+// User function Template for C++
+class Node {
+public:
+    Node* children[26];
+    bool isWord;
+    set<int> list; // Use set to avoid duplicates
+    
+    Node() {
+        for (int i = 0; i < 26; i++) {
+            children[i] = NULL;
+        }
+        isWord = false;
+    }
+};
+
+class Trie {
+public:
+    Node* root;
+    
+    Trie() {
+        root = new Node();
+    }
+    
+    void insert(string s, int index) {
+        Node* temp = root;
+        for (int i = 0; i < s.length(); i++) {
+            int idx = s[i] - 'a';
+            if (temp->children[idx] == NULL) {
+                temp->children[idx] = new Node();
+            }
+            temp = temp->children[idx];
+            temp->list.insert(index); // Insert index to set
+        }
+        temp->isWord = true;
+    }
+    
+    vector<int> suggest(string s) {
+        Node* temp = root;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (temp->children[idx] == NULL) return {};
+            temp = temp->children[idx];
+        }
+        return vector<int>(temp->list.begin(), temp->list.end()); // Convert set to vector
+    }
+};
+
+class Solution {
+public:
+    vector<vector<string>> displayContacts(int n, string contact[], string s) {
+        vector<vector<string>>ans;
+        vector<int>flag(n,1);
+        for(int i=0;i<s.size();i++){
+            char c = s[i];
+            set<string>st;
+            for(int j=0;j<n;j++){
+                if(contact[j].size()>i && contact[j][i]==c && flag[j] ){
+                    st.insert(contact[j]);
+                }
+                else{
+                    flag[j] = 0;
+                }
+            }
+            if(st.empty()){
+                ans.push_back({"0"});
+            }
+            else{
+               vector<string>temp(st.begin(),st.end());
+                ans.push_back(temp);
+            }
+        }
+        return ans;
+    
+    }
+};
+
+-------------------------------------------------------------------TRIE-GFG-WA-33
+
+
+// User function Template for C++
+class Node {
+public:
+    Node* children[26];
+    bool isWord;
+    set<int> list; // Use set to avoid duplicates
+    
+    Node() {
+        for (int i = 0; i < 26; i++) {
+            children[i] = NULL;
+        }
+        isWord = false;
+    }
+};
+
+class Trie {
+public:
+    Node* root;
+    
+    Trie() {
+        root = new Node();
+    }
+    
+    void insert(string s, int index) {
+        Node* temp = root;
+        for (int i = 0; i < s.length(); i++) {
+            int idx = s[i] - 'a';
+            if (temp->children[idx] == NULL) {
+                temp->children[idx] = new Node();
+            }
+            temp = temp->children[idx];
+            temp->list.insert(index); // Insert index to set
+        }
+        temp->isWord = true;
+    }
+    
+    vector<int> suggest(string s) {
+        Node* temp = root;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (temp->children[idx] == NULL) return {};
+            temp = temp->children[idx];
+        }
+        return vector<int>(temp->list.begin(), temp->list.end()); // Convert set to vector
+    }
+};
+
+class Solution {
+public:
+    vector<vector<string>> displayContacts(int n, string contact[], string s) {
+        Trie t;
+        for (int i = 0; i < n; i++) {
+            t.insert(contact[i], i);
+        }
+        
+        vector<vector<string>> ans;
+        for (int i = 1; i <= s.length(); i++) {
+            string prefix = s.substr(0, i);
+            vector<int> temp = t.suggest(prefix);
+            if (temp.size() == 0) {
+                ans.push_back({"0"});
+            } else {
+                vector<string> v;
+                for (int index : temp) {
+                    v.push_back(contact[index]);
+                }
+                sort(v.begin(), v.end());
+                ans.push_back(v);
+            }
+        }
+        return ans;
+    }
+};
+

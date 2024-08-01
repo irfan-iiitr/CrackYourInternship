@@ -1,0 +1,56 @@
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm> // For reverse
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(const string &s, int left, int right) {
+        while (left < right) {
+            if (s[left++] != s[right--]) return false;
+        }
+        return true;
+    }
+
+    vector<vector<int>> palindromePairs(vector<string>& words) {
+        unordered_map<string, int> mp;
+        vector<vector<int>> result;
+
+        // Store reversed words and their indices in the map
+        for (int i = 0; i < words.size(); i++) {
+            string reversedWord = words[i];
+            reverse(reversedWord.begin(), reversedWord.end());
+            mp[reversedWord] = i;
+        }
+
+        // Check each word for palindrome pairs
+        for (int i = 0; i < words.size(); i++) {
+            string currentWord = words[i];
+            int wordLength = currentWord.length();
+
+            for (int j = 0; j <= wordLength; j++) {
+                // Split the word into two parts: prefix and suffix
+                string prefix = currentWord.substr(0, j);
+                string suffix = currentWord.substr(j);
+
+                // If prefix is a palindrome, check if the reversed suffix is in the map
+                if (isPalindrome(prefix, 0, prefix.length() - 1)) {
+                    if (mp.find(suffix) != mp.end() && mp[suffix] != i) {
+                        result.push_back({mp[suffix], i});
+                    }
+                }
+
+                // If suffix is a palindrome, check if the reversed prefix is in the map
+                // Make sure suffix is not empty to avoid duplicate pairs
+                if (j != wordLength && isPalindrome(suffix, 0, suffix.length() - 1)) {
+                    if (mp.find(prefix) != mp.end() && mp[prefix] != i) {
+                        result.push_back({i, mp[prefix]});
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+};
