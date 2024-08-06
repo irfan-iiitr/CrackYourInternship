@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+         // Priority queue to keep track of the minimum height path
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+        pq.push({grid[0][0], {0, 0}});
+        int n = grid.size();
+
+        vector<vector<int>> vis(n, vector<int>(n, 0));
+        vector<int> dx = {-1, 0, 1, 0};
+        vector<int> dy = {0, 1, 0, -1};
+
+        while (!pq.empty()) {
+            int x = pq.top().second.first;
+            int y = pq.top().second.second;
+            int dis = pq.top().first;
+            pq.pop();
+
+            // If we reach the bottom-right corner, return the answer
+            if (x == n-1 && y == n-1) {
+                return dis;
+            }
+
+            // Mark this cell as visited
+            vis[x][y] = 1;
+
+            // Explore the neighbors
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (nx >= 0 && ny >= 0 && nx < n && ny < n && !vis[nx][ny]) {
+                    vis[nx][ny] = 1; // Mark as visited when adding to the queue
+                    pq.push({max(dis, grid[nx][ny]), {nx, ny}});
+                }
+            }
+        }
+
+        return -1; // Should never reach here if the grid is valid
+    }
+};

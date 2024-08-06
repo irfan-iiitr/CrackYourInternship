@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int furthestBuilding(vector<int>& h, int b, int l) {
+        priority_queue<int,vector<int>,greater<int>> pq;
+        for(int i=0;i<h.size()-1;i++)
+        {
+           if(h[i]<h[i+1]){
+               int diff=h[i+1]-h[i];
+               pq.push(diff); //keep pushing diff
+               if(pq.size()>l){  //no of differences is greater than Ladders
+                   int small_diff=pq.top(); pq.pop();
+                   if(small_diff>b) return i; //return idx
+                   else
+                   b-=small_diff;
+               }
+           }
+        }
+
+        return h.size()-1;
+    }
+};

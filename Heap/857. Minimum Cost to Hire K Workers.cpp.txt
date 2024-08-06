@@ -1,0 +1,51 @@
+class Solution {
+public:
+   double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
+        // q=[10,20,5];
+        // w=[70,50,30];
+        // if 1st one is selected
+        // (70/10) * 20..second salary ...and it must be greater than  minW of second  
+        // 70/10 = x/20  (70/10) * 20>=x   70/10 >=20/10
+
+        //calculate each ratio and sort it (wage/quality)
+
+        //keep ratio multiply with others quality ..we will get the wage
+        int n = quality.size();
+        vector<pair<double, int>> v;
+        for (int i = 0; i < n; i++) {
+            double ratio = (double)wage[i] / quality[i];
+            v.push_back({ratio, quality[i]});
+        }
+
+        sort(v.begin(), v.end());
+
+        // ratio sorted in increasing order
+        // ------k ---n
+        //select smallest ratios  
+        priority_queue<int> pq;
+
+        double qsum = 0;
+        for (int i = 0; i < k; i++) {
+            pq.push(v[i].second); //push all the first k small qualities
+            qsum += v[i].second;
+        }
+
+        double managerRatio = v[k-1].first;
+        double result = managerRatio * qsum;
+
+        //(q1 + q2 + q3... qk) * managerRatio
+
+        for (int manager = k; manager < n; manager++) {
+            managerRatio = v[manager].first;
+            pq.push(v[manager].second);
+            qsum += v[manager].second;
+            if (pq.size() > k) {
+                qsum -= pq.top();
+                pq.pop();
+            }
+            result = min(result, managerRatio * qsum);
+        }
+
+        return result;
+    }
+};

@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        priority_queue<int> pq;
+        int c=0;
+        int fuel=startFuel;
+        int dis=startFuel;
+
+        for(int i=0;i<stations.size();i++){
+            int xi=stations[i][0];int fi=stations[i][1];
+            while(dis<xi){//while curretn distance is less than xi..
+                 if(pq.size()==0) return -1;
+                 int maxFuel=pq.top(); pq.pop();
+                 dis+=maxFuel;
+                 c++;
+            }
+            pq.push(fi);//push the fuel
+        }
+
+        while(dis<target){
+           if(pq.size()==0) return -1;
+               int maxFuel=pq.top(); pq.pop();
+                 dis+=maxFuel;
+                 c++;
+
+        }
+
+        return c;
+    }
+};

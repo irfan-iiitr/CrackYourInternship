@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> mostCompetitive(vector<int>& nums, int k) {
+        vector<int> ans; int n=nums.size();
+        vector<int> st;
+        //monotonic stack Qn
+        for(int i=0;i<nums.size();i++){
+            //no of elements left + st.size ..to check if we can make further k elmensts sequemce
+            // -1 to check if after removinf the top element it will be greater tha equal to k
+             while(st.size()>0 and st.back()>nums[i] and (st.size()+ n-i -1)>=k )
+             st.pop_back();
+
+             st.push_back(nums[i]);
+             if(st.size()==k)
+             ans=st;
+        }
+        return ans;
+    }
+};
