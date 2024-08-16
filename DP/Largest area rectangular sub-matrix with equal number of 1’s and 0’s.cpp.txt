@@ -1,0 +1,41 @@
+#include <bits/stdc++.h> 
+int maxSubarrayZero(vector<int>& v) {
+    unordered_map<int, int> mp;
+    mp[0] = -1;
+    int sum = 0, len = 0;
+    for (int i = 0; i < v.size(); i++) {
+        sum += v[i];
+        if (mp.find(sum) != mp.end()) {
+            len = max(len, i - mp[sum]);
+        } else {
+            mp[sum] = i;  // Only update if sum is not already in the map
+        }
+    }
+    return len;
+}
+int maximumArea(vector<vector<int>>& mat, int n, int m)
+{
+    // Write your code here.
+    int ans=0;
+    for(int i=0;i<n;i++){ //starting from this row
+
+        vector<int> temp(m,0);
+        for(int row=i;row<n;row++){
+            for(int col=0;col<m;col++){
+                 if(mat[row][col]==1)
+                 temp[col]++;
+                 else
+                 temp[col]--;
+            }
+            int len=maxSubarrayZero(temp);
+            int height= row-i+1;
+            ans=max(ans,len*height);
+        }
+
+    }
+
+    return ans;
+}
+
+
+Coding Ninjas

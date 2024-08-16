@@ -1,0 +1,75 @@
+----------------MEM---------------------
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> memo(n, vector<int>(n + 1, -1));
+        return lengthOfLISHelper(nums, -1, 0, memo);
+    }
+    
+private:
+    int lengthOfLISHelper(vector<int>& nums, int prevIndex, int currentIndex, vector<vector<int>>& memo) {
+        if (currentIndex == nums.size()) {
+            return 0;
+        }
+        
+        if (memo[prevIndex + 1][currentIndex] != -1) {
+            return memo[prevIndex + 1][currentIndex];
+        }
+        
+        int take = 0;
+        if (prevIndex == -1 || nums[currentIndex] > nums[prevIndex]) {
+            take = 1 + lengthOfLISHelper(nums, currentIndex, currentIndex + 1, memo);
+        }
+        
+        int notTake = lengthOfLISHelper(nums, prevIndex, currentIndex + 1, memo);
+        
+        memo[prevIndex + 1][currentIndex] = max(take, notTake);
+        return memo[prevIndex + 1][currentIndex];
+    }
+};
+
+
+---------------------TAB_-----------------------------
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> ans;
+        ans.push_back(nums[0]);
+        int n=nums.size();
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]>ans.back())
+            ans.push_back(nums[i]);
+            else{
+                int idx=lower_bound(ans.begin(),ans.end(),nums[i])-ans.begin();
+                ans[idx]=nums[i];
+            }
+        }
+
+        return ans.size();
+    }
+};
+
+----------------------------------------LENGTH---------------------------
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n,1);
+        int ans=INT_MIN;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i]>nums[j])
+                dp[i]=max(dp[i],1+dp[j]);
+            }
+            ans=max(ans,dp[i]);
+        }
+
+        return ans;
+    }
+};

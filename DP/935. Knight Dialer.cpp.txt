@@ -1,0 +1,32 @@
+class Solution {
+public:
+int mod=1e9+7;
+int dp[5000][10];
+int solve(int n,int pos,vector<vector<int>>&moves)
+{
+    if(n==0)
+    return 1;
+    if(dp[n][pos]!=-1)
+    return dp[n][pos];
+
+    int ans=0;
+    for(auto &ele:moves[pos])
+    {
+        ans=(ans+solve(n- 1,ele,moves))%mod;
+    }
+    return dp[n][pos]=ans;
+}
+    int knightDialer(int n) {
+        //at 0 -it can move to 4,6
+     //at 1 - it can go to 6 and 8
+        
+       vector<vector<int>> moves = {{4, 6}, {6, 8}, {7, 9}, {4, 8}, {0, 3, 9}, {}, {0, 1, 7}, {2, 6}, {1, 3}, {2, 4}};
+        memset(dp,-1,sizeof(dp));
+        int ans=0;
+        for(int i=0;i<=9;i++)  // starting fom all digits 0 to 9
+        {
+            ans=(ans+solve(n-1,i,moves))%mod;
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,148 @@
+class Solution {
+public:
+   int f(int i,int prev,vector<int>&nums){
+      if(i==nums.size()) return 0;
+      int take=0;
+
+      if(prev==-1 or nums[i]-1!=nums[prev]){
+        take=f(i+1,i,nums) + nums[i];
+      }
+      int notake=f(i+1,prev,nums);
+
+      cout<<i<<" "<<max(take,notake)<<endl;
+
+      return max(take,notake);
+   }
+    int deleteAndEarn(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        return f(0,-1,nums);
+    }
+};
+
+--------------------------------------------------MEM------------------------------
+
+class Solution {
+public:
+   int f(int i,int prev,vector<int>&nums,vector<vector<int>> &dp){
+      if(i==nums.size()) return 0;
+      int take=0;
+
+      if(dp[i][prev+1]!=-1)return dp[i][prev+1];
+
+      if(prev==-1 or nums[i]-1!=nums[prev]){
+        take=f(i+1,i,nums,dp) + nums[i];
+      }
+      int notake=f(i+1,prev,nums,dp);
+
+      cout<<i<<" "<<max(take,notake)<<endl;
+
+      return dp[i][prev+1]= max(take,notake);
+   }
+    int deleteAndEarn(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int n=nums.size();
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        return f(0,-1,nums,dp);
+    }
+};
+
+
+---------------------------------------TAB- STILL MLE-----------------------------------
+
+int deleteAndEarn(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int n = nums.size();
+        if (n == 0) return 0;
+        
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+        
+        // Fill the dp array in a bottom-up manner
+        for (int i = n - 1; i >= 0; --i) {
+            for (int prev = i - 1; prev >= -1; --prev) {
+                int take = 0;
+                if (prev == -1 || nums[i]-1 != nums[prev]) {
+                    take = nums[i] + dp[i + 1][i + 1];
+                }
+                int notake = dp[i + 1][prev + 1];
+                dp[i][prev + 1] = max(take, notake);
+            }
+        }
+        
+        return dp[0][0];
+
+-------------------------------------------------------------------------------------------------
+
+
+
+TRAVERSE OVER 1 TO MAX-ELEMENT
+
+class Solution {
+public:
+   int solve(int i,vector<int> &freq,vector<int> &dp){
+        if(i >= dp.size()) return 0;
+        else if(dp[i] != -1) return dp[i];
+        
+        int pick = 0;
+        if(freq[i]) pick = (i*freq[i]) + solve(i+2,freq,dp);
+        int not_pick = solve(i+1,freq,dp);
+        
+        int ans = max(pick,not_pick);
+        return dp[i] = ans;
+    }
+    
+    int deleteAndEarn(vector<int>& nums){
+        int size = *max_element(nums.begin(),nums.end());
+        
+        vector<int> freq(size+1),dp(size+1,-1);
+        
+        for(auto it : nums) freq[it]++;
+        
+        int ans = solve(1,freq,dp);
+        
+        return ans;
+    }
+};
+
+-------------------------ITS TABULATED CODE ------------------
+
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        int maxVal = *max_element(nums.begin(), nums.end());
+        
+        vector<int> freq(maxVal + 1, 0);
+        vector<int> dp(maxVal + 1, 0);
+        
+        for (int num : nums) {
+            freq[num]++;
+        }
+        
+        dp[0] = 0;  // Base case: if there are no elements to process
+        dp[1] = freq[1];  // Base case: if we only have element '1'
+        
+        for (int i = 2; i <= maxVal; ++i) {
+            int pick = i * freq[i] + dp[i - 2];  // Pick this element and add the result of dp[i-2]
+            int not_pick = dp[i - 1];  // Do not pick this element, so take the result of dp[i-1]
+            dp[i] = max(pick, not_pick);
+        }
+        
+        return dp[maxVal];
+    }
+};
+
+
+------------------------------MOST OPTIMSED----------------------------
+
+int deleteAndEarn(vector<int>& nums) {
+        int n = *max_element(nums.begin(), nums.end());
+        vector<int> count(n+1);
+        
+        for(auto x : nums) count[x] += x;
+
+        for(int i = 2; i <= n; i++) 
+            count[i] = max(count[i] + count[i - 2], count[i - 1]);
+        
+        return count[n];
+    }
+
+
