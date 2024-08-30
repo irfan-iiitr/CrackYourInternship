@@ -1,0 +1,27 @@
+class Solution {
+private:
+vector<vector<int>> ans;
+public:
+void f(int idx,int n,int k,vector<int>&v,vector<int>&temp){
+    if(temp.size()==k){
+        ans.push_back(temp); return;
+    }
+    if(idx>=n) return;
+
+    temp.push_back(v[idx]);
+    f(idx+1,n,k,v,temp);
+    temp.pop_back();
+    f(idx+1,n,k,v,temp);
+}
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> v;
+        for(int i=1;i<=n;i++){
+            v.push_back(i);
+        }
+
+        vector<int> temp;
+
+        f(0,n,k,v,temp);
+        return ans;
+    }
+};

@@ -1,0 +1,78 @@
+Given a square maze containing positive numbers, 
+find all paths from a corner cell (any of the extreme four corners) to the middle cell. 
+We can move exactly n steps from a cell in 4 directions i.e. North, East, West and South where n is value of the cell, 
+
+// Define the dimensions of the maze
+const int N = 9;
+int maze[N][N] = {
+    { 3, 5, 4, 4, 7, 3, 4, 6, 3 },
+    { 6, 7, 5, 6, 6, 2, 6, 6, 2 },
+    { 3, 3, 4, 3, 2, 5, 4, 7, 2 },
+    { 6, 5, 5, 1, 2, 3, 6, 5, 6 },
+    { 3, 3, 4, 3, 0, 1, 4, 3, 4 },
+    { 3, 5, 4, 3, 2, 2, 3, 3, 5 },
+    { 3, 5, 4, 3, 2, 6, 4, 4, 3 },
+    { 3, 5, 1, 3, 7, 5, 3, 6, 4 },
+    { 6, 2, 4, 3, 4, 5, 4, 5, 1 }
+};
+
+// Direction vectors for moving in the maze
+int dirX[4] = {0, 0, 1, -1};
+int dirY[4] = {1, -1, 0, 0};
+
+// Function to check if a cell is valid and not visited
+bool isValid(int x, int y, vector<vector<bool>> &visited) {
+    return (x >= 0 && x < N && y >= 0 && y < N && !visited[x][y]);
+}
+
+// Function to print the path
+void printPath(vector<pair<int, int>> &path) {
+    for (auto p : path) {
+        cout << "(" << p.first << ", " << p.second << ") -> ";
+    }
+    cout << "MID\n";
+}
+
+// Backtracking function to find all paths
+void findPaths(int x, int y, vector<vector<bool>> &visited, vector<pair<int, int>> &path) {
+    // Middle cell coordinates
+    int mid = N / 2;
+
+    // If destination is reached
+    if (x == mid && y == mid) {
+        printPath(path);
+        return;
+    }
+
+    // Mark current cell as visited and add it to the path
+    visited[x][y] = true;
+    path.push_back({x, y});
+
+    // Move in all 4 allowed directions
+    for (int i = 0; i < 4; i++) {
+        int step = maze[x][y];
+        int newX = x + dirX[i] * step;
+        int newY = y + dirY[i] * step;
+
+        if (isValid(newX, newY, visited)) {
+            findPaths(newX, newY, visited, path);
+        }
+    }
+
+    // Backtrack: Unmark current cell as visited and remove it from path
+    visited[x][y] = false;
+    path.pop_back();
+}
+
+int main() {
+    // Starting corner cells
+    vector<pair<int, int>> corners = {{0, 0}, {0, N-1}, {N-1, 0}, {N-1, N-1}};
+    vector<vector<bool>> visited(N, vector<bool>(N, false));
+    vector<pair<int, int>> path;
+
+    for (auto corner : corners) {
+        findPaths(corner.first, corner.second, visited, path);
+    }
+
+    return 0;
+}

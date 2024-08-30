@@ -1,0 +1,35 @@
+class Solution {
+private:
+    vector<vector<int>> result;
+public:
+    void solve(vector<int>& nums, int target, int index, vector<int>& list) {
+        if (target == 0) {
+            result.push_back(list);
+            return;
+        }
+
+        // Loop through array while skipping duplicates
+        for (int i = index; i < nums.size(); ++i) {
+            // Skip duplicates
+            if (i > index && nums[i] == nums[i - 1])
+                continue;
+
+            // If current element is greater than target, break the loop
+            if (nums[i] > target)
+                break;
+
+            // Choose current element
+            list.push_back(nums[i]);
+            // Recursive call with reduced target and move to next index
+            solve(nums, target - nums[i], i + 1, list);
+            // Backtrack: remove last element
+            list.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> list;
+        solve(candidates, target, 0,list);
+        return result;
+    }
+};

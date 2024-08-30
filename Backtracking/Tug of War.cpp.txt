@@ -1,0 +1,26 @@
+#include <bits/stdc++.h> 
+
+void f(int i,int cnt,int sum,int totalSum,vector<int>&a,int n,int &ans){
+      if(i==n or cnt>=(n/2)){
+            if(cnt==(n/2))
+            {
+                  ans=min(ans, abs(totalSum-2*sum));
+            }
+            return;
+      }
+      f(i+1,cnt,sum,totalSum,a,n,ans);
+      f(i+1,cnt+1,sum+a[i],totalSum,a,n,ans);
+}
+int tugOfWar(vector<int> &arr, int n)
+{
+    // write your code here
+
+        int sum=accumulate(arr.begin(),arr.end(),0);
+        int target=sum/2;
+        int ans=INT_MAX;
+
+      
+      f(0,0,0,sum,arr,n,ans);  
+
+      return ans;                              
+}

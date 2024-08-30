@@ -1,0 +1,35 @@
+class Solution {
+  public:
+  vector<vector<string>> ans;
+  bool isPalin(string s){
+      int n=s.length();
+      int i=0;
+      for(int i=0;i<n/2;i++){
+          if(s[i]!=s[n-1-i])
+          return false;
+      }
+      return true;
+  }
+  void f(int i,int n,string s,vector<string>&path){
+      if(i==n){
+          ans.push_back(path);
+          return;
+      }
+      
+      for(int j=i;j<n;j++){
+          string temp=s.substr(i,j-i+1);
+          if(isPalin(temp)){
+              path.push_back(temp);
+              f(j+1,n,s,path);
+              path.pop_back();
+          }
+      }
+  }
+    vector<vector<string>> allPalindromicPerms(string S) {
+        // code here
+        int n=S.length();
+        vector<string> path;
+        f(0,n,S,path);
+        return ans;
+    }
+};

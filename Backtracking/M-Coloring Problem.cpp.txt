@@ -1,0 +1,34 @@
+bool isSafe(vector<vector<int>> &mat, int c,int n,vector<int>&col,int v){
+
+    for(int i=0;i<n;i++){
+        if(mat[v][i]==1 and col[i]==c)
+        return false;
+    }
+    return true;
+}
+
+bool f(int v,int m,vector<vector<int>> &mat, int n,vector<int>&col){
+    if(v==n) return true;
+
+    for(int c=1;c<=m;c++){ //try to fill with all colors from 1 to m
+        if(isSafe(mat,c,n,col,v)){
+            col[v]=c;
+            if(f(v+1,m,mat,n,col)) return true;
+            else
+            col[v]=0;
+        }
+    }
+
+    return false;
+
+}
+string graphColoring(vector<vector<int>> &mat, int m) {
+    // Write your code here
+    int n=mat.size();
+    vector<int> color(n,0);
+    if(f(0,m,mat,n,color))
+    return "YES";
+
+    return "NO";
+}
+
